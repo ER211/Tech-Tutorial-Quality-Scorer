@@ -1,0 +1,340 @@
+<!-- =========================================
+FILE 1 → index.html
+========================================= -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI + IR Course Recommendation System</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <div class="logo-icon">
+            AI
+        </div>
+
+        <div>
+
+            <div class="logo-text">
+                Course Intelligence Platform
+            </div>
+
+            <div class="logo-sub">
+                AI · IR · EDA · RECOMMENDER SYSTEM
+            </div>
+
+        </div>
+
+    </div>
+
+    <nav class="nav-tabs">
+
+        <button class="nav-tab active"
+                onclick="showPage('dashboardPage', this)">
+            Dashboard
+        </button>
+
+        <button class="nav-tab"
+                onclick="showPage('recommenderPage', this)">
+            AI Recommender
+        </button>
+
+        <button class="nav-tab"
+                onclick="showPage('edaPage', this)">
+            EDA & Charts
+        </button>
+
+    </nav>
+
+</header>
+
+<main class="main">
+
+<!-- ========================================= -->
+<!-- DASHBOARD PAGE -->
+<!-- ========================================= -->
+
+<div id="dashboardPage" class="page active-page">
+
+<section class="stats-grid">
+
+    <div class="card">
+        <h2 id="totalCourses">0</h2>
+        <p>Total Courses</p>
+    </div>
+
+    <div class="card">
+        <h2 id="freeCourses">0</h2>
+        <p>Free Courses</p>
+    </div>
+
+    <div class="card">
+        <h2 id="certificateCourses">0</h2>
+        <p>With Certificate</p>
+    </div>
+
+    <div class="card">
+        <h2 id="avgRating">0</h2>
+        <p>Avg Rating</p>
+    </div>
+
+    <div class="card">
+        <h2 id="categoriesCount">0</h2>
+        <p>Categories</p>
+    </div>
+
+    <div class="card">
+        <h2 id="highlyReviewed">0</h2>
+        <p>Highly Reviewed</p>
+    </div>
+
+</section>
+
+<section class="dashboard">
+
+    <div class="chart-card">
+        <h3>Courses by Category</h3>
+        <canvas id="categoryChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Level Distribution</h3>
+        <canvas id="levelChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Free vs Paid</h3>
+        <canvas id="freePaidChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Rating Distribution</h3>
+        <canvas id="ratingChart"></canvas>
+    </div>
+
+</section>
+
+</div>
+
+<!-- ========================================= -->
+<!-- AI RECOMMENDER PAGE -->
+<!-- ========================================= -->
+
+<div id="recommenderPage" class="page">
+
+<section class="hero">
+
+    <div class="hero-title">
+        AI Course <span>Recommendation Engine</span>
+    </div>
+
+    <div class="hero-desc">
+        TF-IDF · Content-Based Filtering · Cosine Similarity
+    </div>
+
+</section>
+
+<section class="search-box">
+
+<div class="filter-grid">
+
+    <div class="filter-group">
+
+        <label>Skill Level</label>
+
+        <select id="levelInput">
+
+            <option value="">All</option>
+
+            <option>Beginner</option>
+
+            <option>Intermediate</option>
+
+            <option>Advanced</option>
+
+            <option>Fluency</option>
+
+        </select>
+
+    </div>
+
+    <div class="filter-group">
+
+        <label>Category / School</label>
+
+        <input type="text"
+               id="categoryInput"
+               placeholder="Artificial Intelligence">
+
+    </div>
+
+    <div class="filter-group">
+
+        <label>Price Preference</label>
+
+        <select id="priceInput">
+
+            <option value="">All</option>
+
+            <option value="true">Free</option>
+
+            <option value="false">Paid</option>
+
+        </select>
+
+    </div>
+
+    <div class="filter-group">
+
+        <label>Certificate</label>
+
+        <select id="certificateInput">
+
+            <option value="">Any</option>
+
+            <option value="true">Yes</option>
+
+            <option value="false">No</option>
+
+        </select>
+
+    </div>
+
+    <div class="filter-group full-width">
+
+        <label>
+            Keywords / Topics (comma-separated)
+        </label>
+
+        <input type="text"
+               id="keywordInput"
+               placeholder="Python, machine learning, AWS, deep learning">
+
+    </div>
+
+    <div class="filter-group">
+
+        <label>Max Duration (hours)</label>
+
+        <input type="number"
+               id="durationInput"
+               placeholder="40">
+
+    </div>
+
+</div>
+
+<button class="rec-btn"
+        onclick="generateRecommendations()">
+
+    Get Top 5 Recommendations
+
+</button>
+
+</section>
+
+<section>
+
+<div class="section-header">
+
+    <h1>Top 5 Recommendations</h1>
+
+    <p>
+        Generated by the AI recommendation engine.
+    </p>
+
+</div>
+
+<div id="recommendationResults"
+     class="results-grid">
+
+</div>
+
+</section>
+
+</div>
+
+<!-- ========================================= -->
+<!-- EDA PAGE -->
+<!-- ========================================= -->
+
+<div id="edaPage" class="page">
+
+<section class="stats-grid">
+
+    <div class="card">
+        <h2 id="avgDuration">0</h2>
+        <p>Avg Duration in Hours</p>
+    </div>
+
+    <div class="card">
+        <h2 id="uniqueTags">0</h2>
+        <p>Unique Topics / Tags</p>
+    </div>
+
+    <div class="card">
+        <h2 id="maxReviews">0</h2>
+        <p>Max Reviews</p>
+    </div>
+
+    <div class="card">
+        <h2 id="topRated">0</h2>
+        <p>Top Rated</p>
+    </div>
+
+    <div class="card">
+        <h2 id="contentRich">0</h2>
+        <p>Content-Rich</p>
+    </div>
+
+    <div class="card">
+        <h2 id="longCourses">0</h2>
+        <p>Long Courses</p>
+    </div>
+
+</section>
+
+<section class="dashboard">
+
+    <div class="chart-card">
+
+        <h3>Course Duration</h3>
+
+        <canvas id="durationChart"></canvas>
+
+    </div>
+
+    <div class="chart-card">
+
+        <h3>Reviews Distribution</h3>
+
+        <canvas id="reviewsChart"></canvas>
+
+    </div>
+
+</section>
+
+</div>
+
+</main>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
